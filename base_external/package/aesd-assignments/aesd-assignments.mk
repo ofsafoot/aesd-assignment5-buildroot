@@ -6,7 +6,7 @@
 ##############################################################
 
 # Commit of the assignment 3 and later source repository to build
-AESD_ASSIGNMENTS_VERSION = 2837704b92a58f85d621ed4c9473ae5435ff9947
+AESD_ASSIGNMENTS_VERSION = 533644ac7f3eda624e0648f41a9743b9a86aef90
 # Note: Be sure to reference the *ssh* repository URL here (not https) to work properly
 # with ssh keys and the automated build/test system.
 # Your site should start with git@github.com:
