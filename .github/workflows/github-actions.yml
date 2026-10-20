@@ -7,9 +7,15 @@ on:
             - '*'
 jobs:
     full-test:
-        container: cuaesd/aesd-autotest:24-assignment4-buildroot
+        container:
+            image: cuaesd/aesd-autotest:24-assignment4-buildroot
+            # Keep the buildroot download and ccache directories across runs on the
+            # self-hosted runner, the runner clears the container home on each job
+            volumes:
+              - /home/foster/.dl:/github/home/.dl
+              - /home/foster/.buildroot-ccache:/github/home/.buildroot-ccache
         runs-on: self-hosted
-        timeout-minutes: 120
+        timeout-minutes: 300
         steps:
           - uses: actions/checkout@v2
           - name: Checkout submodules
