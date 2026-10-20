@@ -14,12 +14,22 @@ jobs:
             volumes:
               - /home/foster/.dl:/github/home/.dl
               - /home/foster/.buildroot-ccache:/github/home/.buildroot-ccache
+              # Local copy of the buildroot repository, cloning it from gitlab
+              # over this runner's network connection is unreliable
+              - /home/foster/.buildroot-mirror.git:/github/home/buildroot-mirror.git:ro
         runs-on: self-hosted
         timeout-minutes: 300
         steps:
           - uses: actions/checkout@v2
           - name: Checkout submodules
-            run: git submodule update --init --recursive
+            run: |
+              if [ -f /github/home/buildroot-mirror.git/HEAD ]; then
+                  echo "Using local buildroot mirror"
+                  git config --global --add safe.directory '*'
+                  git config --global protocol.file.allow always
+                  git config --global url."file:///github/home/buildroot-mirror.git".insteadOf https://gitlab.com/buildroot.org/buildroot/
+              fi
+              git submodule update --init --recursive
           - uses: webfactory/ssh-agent@v0.5.3
             with:
                 ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
